@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 # Get AWS access key ID, secret access key, and session token from environment variables
 aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
@@ -48,121 +49,123 @@ aws_UserData = f'TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H
 
 # Define a function to run an AWS CLI command and return the output
 def run_command(command):
-    output = os.popen(command).read()
-    if "error" in output.lower():
-        pass
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    output, error = process.communicate()
+    if process.returncode != 0:
+        return "Access Denied"
     else:
-        return output
+        return output.decode("utf-8")
 
-# Run the AWS CLI commands and print the output
+# Run the AWS CLI commands and print the output if any
 
-print('Caller Identity:')
+print('Caller Identity:  $ aws sts get-caller-identity --output json')
 print(run_command(caller_identity))
-
-print('IAM Users:')
+print('==============================')
+print('IAM Users:  $ aws iam list-users --output json')
 print(run_command(iam_users))
-
-print('IAM Groups:')
+print('==============================')
+print('IAM Groups:  $ ')
 print(run_command(iam_groups))
-
-print('IAM Roles:')
+print('==============================')
+print('IAM Roles:  $ ')
 print(run_command(iam_rols))
-
-print('IAM Instance instance_profiles:')
+print('==============================')
+print('IAM Instance instance_profiles:  $ ')
 print(run_command(iam_instance_profiles))
-
-print('SecretManager Secrets:')
+print('==============================')
+print('SecretManager Secrets:  $ ')
 print(run_command(secretmanager_secrets))
-
-print('KMS keys:')
+print('==============================')
+print('SecretManager Secrets:  $ ')
+print(run_command(secretmanager_secrets))
+print('==============================')
+print('KMS Keys:  $ ')
 print(run_command(kms_keys))
-
-print('IAM Policies:')
-print(run_command(iam_policies))
-
-print('EC2 Instances:')
+print('==============================')
+print('EC2 Instances:  $ ')
 print(run_command(ec2_instances))
-
-print('EC2 Instances Profile associations:')
+print('==============================')
+print('EC2 Profile Associations:  $ ')
 print(run_command(ec2_profile_associations_command))
-
-print('EC2 VPCs:')
+print('==============================')
+print('EC2 VPCs:  $ ')
 print(run_command(ec2_VPCs_command))
-
-print('EC2 VPCs Peering connections:')
+print('==============================')
+print('EC2 VPC Peering Connections:  $ ')
 print(run_command(ec2_VPCs_peering_connections_command))
-
-print('EC2 Subnets:')
+print('==============================')
+print('EC2 Subnets:  $ ')
 print(run_command(ec2_subnets_command))
-
-print('EC2 Routing tables:')
+print('==============================')
+print('EC2 Route Tables:  $ ')
 print(run_command(ec2_route_table_command))
-
-print('EC2 Network Access Lists:')
+print('==============================')
+print('EC2 Network ACLs:  $ ')
 print(run_command(ec2_network_acls_command))
-
-print('EC2 EBS Volumes:')
+print('==============================')
+print('EC2 Volumes:  $ ')
 print(run_command(ec2_volumes))
-
-print('EC2 EBS Snapshots:')
+print('==============================')
+print('EC2 Snapshots:  $ ')
 print(run_command(ec2_snapshots))
-
-print('S3 Buckets:')
+print('==============================')
+print('S3 Buckets:  $ ')
 print(run_command(s3_command))
-
-print('Lambda Functions:')
+print('==============================')
+print('Lambda Functions:  $ ')
 print(run_command(lambda_functions))
-
-print('Lambda Layers:')
+print('==============================')
+print('Lambda Layers:  $ ')
 print(run_command(lambda_layers))
-
-print('APIGateway Rest APIs:')
+print('==============================')
+print('API Gateway Rest APIs:  $ ')
 print(run_command(apigateway_rest_apis))
-
-print('APIGateway API Keys :')
+print('==============================')
+print('API Gateway API Keys:  $ ')
 print(run_command(apigateway_api_keys))
-
-print('Dynamodb Tables :')
+print('==============================')
+print('DynamoDB Tables:  $ ')
 print(run_command(dynamodb_tables))
-
-print('Dynamodb Backups :')
+print('==============================')
+print('DynamoDB Backups:  $ ')
 print(run_command(dynamodb_backups))
-
-print('Dynamodb Global Tables :')
+print('==============================')
+print('DynamoDB Global Tables:  $ ')
 print(run_command(dynamodb_global_tables))
-
-print('Dynamodb Exports :')
+print('==============================')
+print('DynamoDB Exports:  $ ')
 print(run_command(dynamodb_exports))
-
-print('Dynamodb Endpoints :')
+print('==============================')
+print('DynamoDB Endpoints:  $ ')
 print(run_command(dynamodb_endpoints))
-
-print('ECR Repositories :')
+print('==============================')
+print('ECR Repositories:  $ ')
 print(run_command(ecr_repositories))
-
-print('ECS Clusters :')
+print('==============================')
+print('ECS Clusters:  $ ')
 print(run_command(ecs_clusters))
-
-print('EkS Clusters :')
-print(run_command(ecs_clusters))
-
-print('RDS DB Clusters :')
+print('==============================')
+print('EKS Clusters:  $ ')
+print(run_command(eks_clusters))
+print('==============================')
+print('RDS DB Clusters:  $ ')
 print(run_command(rds_db_clusters))
-
-print('RDS DB Instances :')
+print('==============================')
+print('RDS DB Instances:  $ ')
 print(run_command(rds_db_instances))
-
-print('RDS DB Subnet Groups :')
+print('==============================')
+print('RDS DB Subnet Groups:  $ ')
 print(run_command(rds_db_subnet_groups))
-
-print('RDS DB Security Groups :')
+print('==============================')
+print('RDS DB Security Groups:  $ ')
 print(run_command(rds_db_security_groups))
-
-print('RDS DB Proxies:')
+print('==============================')
+print('RDS DB Proxies:  $ ')
 print(run_command(rds_db_proxies))
-
-print('AWS Meta Data:')
+print('==============================')
+print('AWS MetaData:')
 print(run_command(aws_MetaData))
-
-print('AWS User Data:')
+print('==============================')
+print('AWS UserData:')
 print(run_command(aws_UserData))
+print('==============================')
