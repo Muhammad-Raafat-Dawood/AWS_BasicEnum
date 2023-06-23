@@ -49,7 +49,10 @@ aws_UserData = f'TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H
 # Define a function to run an AWS CLI command and return the output
 def run_command(command):
     output = os.popen(command).read()
-    return output
+    if "An error occurred" in output:
+        pass
+    else:
+        return output
 
 # Run the AWS CLI commands and print the output
 
